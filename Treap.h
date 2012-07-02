@@ -5,12 +5,9 @@ CS 352
 Treap
 
 An implementation of a binary search tree that incorporates properties of a heap,
-preventing an extremely imbalanced tree.
-
-
+preventing an overly imbalanced tree.
 */
 
-asdfasdfadsfasdf
 #include <queue>
 #include <stack>
 #include <iostream>
@@ -23,7 +20,7 @@ struct Node
 	T meat;
 	bool deleted;
 	unsigned int priority;
-
+	Node* right, left;
 };
 
 template <class T>
@@ -53,25 +50,26 @@ public:
 
 
 	Treap() {}
-	Treap(Treap<T> other);
+
 	~Treap() {}
-	&Treap operator=(const &Treap t);
+	Treap(const Treap& other); 
+	Treap& operator=(const Treap<T> &rhs);
 
 	/**
 	insert(const &T meat)
 
 	Inserts a node into the tree. 
 	*/
-	void insert(const &T meat);
+	void insert(const T& meat);
 
 	/**
-	remove(const &T meat)
+	remove(const T& meat)
 
 	Removes node with the given value.
 	If no node with that value exists, does nothing.
 	If called on an empty Treap, throws TreapException.
 	*/
-	T remove(const &T meat);
+	T remove(const T& meat);
 	
 	/**
 	remove_min()
@@ -103,36 +101,91 @@ public:
 	/**
 	find_max()
 
-	Finds and returns the minimum value.
+	Finds and returns the maximum value.
 	Throws TreapException if called on empty Treap.
 	*/
 	T find_max() const; 
 
+	/**
+	contains(const T& meat) const
 
-	bool contains(const &T meat) const;
+	Returns whether or not the given value is 
+	located in the treap. Does not change the Treap.
+	*/
+	bool contains(const T& meat) const;
+	/**
+	empty()
+
+	Returns whether or not the Treap is logically empty.
+	Does not change the Treap.
+	*/
 	bool empty() const;
+
+	/**
+	int size()
+	
+	Returns the logial size of the treap.
+	Does not change the Treap. 
+	*/
 	int size() const;
+
+	/**
+	int deleted()
+
+	Returns the number of logically deleted nodes.
+	Does not change the treap.
+	*/
 	int deleted() const;
+	
+	/**
+	void cleanup()
+
+	Rebuilds Treap by physically removing logically 
+	deleted nodes. Automatically called if Treap has >
+	100 items and has more than 3/4 deleted nodes. 
+	*/
 	void cleanup();
-	void traverse_preorder(&ostream o, char delim = '\n');
-	void traverse_inorder(&ostream o, char delim = '\n');
-	void traverse_reverseorder(&ostream o, char delim = '\n');
-	void traverse_postorder(&ostream o, char delim = '\n');
-	asdfadfasdfasdf
-}
+
+	/**
+	traverse_preorder
+
+	Returns the values of the nodes traveled in 
+	preorder as an ostream. 
+	*/
+	void traverse_preorder(ostream& o, char delim = '\n');
+	
+	/**
+	traverse_ineorder
+
+	Returns the values of the nodes traveled in 
+	inorder (R-root-L) as an ostream. 
+	*/
+	void traverse_inorder(ostream& o, char delim = '\n');
+	
+	/**
+	traverse_reverseorder
+
+	Returns the values of the nodes traveled in 
+	reverse order (L-root-R) as an ostream. 
+	*/
+	void traverse_reverseorder(ostream& o, char delim = '\n');
+	
+	/**
+	traverse_postorder
+
+	Returns the values of the nodes traveled in 
+	post order (L-R-Root) as an ostream. 
+	*/
+	void traverse_postorder(ostream& o, char delim = '\n');
+};
+
 /**
 all_traverse()
 
 Traverses the tree using a queue, depending on 
 what function called it will return different values. 
 */
-template <class T>
-int Treap<T>::all_traverse()
-{
-	queue<Node<T>*> slimJim;		
-	slimJim.push(root);
-	
-}
+
 
 
 
