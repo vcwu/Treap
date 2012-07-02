@@ -17,10 +17,24 @@ using namespace std;
 template <class T>
 struct Node
 {
-	T meat;
-	bool deleted;
-	unsigned int priority;
-	Node* right, left;
+	//should this be a pointer to meat??
+	T meat;					//value of node
+	bool deleted;			
+	unsigned int priority;	//Random priority, for heaping
+	Node<T> * right;
+	Node<T> * left;
+
+	Node<T>(T val, unsigned int prior) : meat(val), priority(prior)
+	{};
+	//WILL THE MEAT have a copy constructor?? should i make
+	//it a pointer instead??
+	/**
+	Returns whether or not Node is a parent.
+	*/
+	bool hasChildren()
+	{
+		return (right||left);
+	}
 };
 
 template <class T>
@@ -43,12 +57,12 @@ private:
 	contains()	returns if found (bool - 0,1)
 
 	*/
-	int all_traverse();
+	//int all_traverse();
 
 
 public:
 
-
+	int all_traverse(); //put in public for testing purposes
 	Treap() {}
 
 	~Treap() {}
@@ -177,20 +191,27 @@ public:
 	post order (L-R-Root) as an ostream. 
 	*/
 	void traverse_postorder(ostream& o, char delim = '\n');
+	
 };
 
-/**
-all_traverse()
-
-Traverses the tree using a queue, depending on 
-what function called it will return different values. 
-*/
 
 
+template <class T>
+int Treap<T>::all_traverse() 
+{
+	int meat = 0;	//default to false as well
+	queue< Node<T>* > slim;
+	slim.push(root);
 
+	while(!slim.empty())
+	{
+		Node<T>* current = slim.front();
+		slim.pop();
+		//do some fancy switching
 
-
-
-
-
+		if(current->hasChildren())
+			return 1;			
+	}
+	return 0;
+}
 
