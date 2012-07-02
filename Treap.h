@@ -24,17 +24,11 @@ struct Node
 	Node<T> * right;
 	Node<T> * left;
 
-	Node<T>(T val, unsigned int prior) : meat(val), priority(prior)
+	Node<T>(T val, unsigned int prior=0) : meat(val), priority(prior)
 	{};
 	//WILL THE MEAT have a copy constructor?? should i make
 	//it a pointer instead??
-	/**
-	Returns whether or not Node is a parent.
-	*/
-	bool hasChildren()
-	{
-		return (right||left);
-	}
+	
 };
 
 template <class T>
@@ -57,12 +51,12 @@ private:
 	contains()	returns if found (bool - 0,1)
 
 	*/
-	//int all_traverse();
+//	int all_traverse();
 
 
 public:
 
-	int all_traverse(); //put in public for testing purposes
+	int all_traverse(int which, const T& target = NULL); //put in public for testing purposes
 	Treap() {}
 
 	~Treap() {}
@@ -197,7 +191,7 @@ public:
 
 
 template <class T>
-int Treap<T>::all_traverse() 
+int Treap<T>::all_traverse(int which, const T& target = NULL) 
 {
 	int meat = 0;	//default to false as well
 	queue< Node<T>* > slim;
@@ -207,11 +201,40 @@ int Treap<T>::all_traverse()
 	{
 		Node<T>* current = slim.front();
 		slim.pop();
-		//do some fancy switching
+		
+		//Depending on what method calls, 
+		//meat is counted differently.
+		switch(which)
+		{
+		//size() -counts non deleted nodes
+		case 0:
+			if(!(current->deleted))
+				meat++;
+			break;
+		//deleted - counts deleted nodes
+		case 1:
+			if(current->deleted)
+				meat++;
+			break;
+		//empty() -returns true if any node is not deleted
+		case 2:
+			if(!(current->deleted))
+				return 1;
+			break;
+		//contains() - returns if treap has the target
+		case 3:
+			if(!(current->deleted)
+				&& current->meat == target)
+				return 1;
+			break;
+		}
 
-		if(current->hasChildren())
-			return 1;			
+		//Push the children, if any, onto the queue
+		if(current->left)
+			slim.push(current->left);
+		if(current->right)
+			slim.push(current->right);
 	}
-	return 0;
+	return meat;
 }
 
