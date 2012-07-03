@@ -56,8 +56,8 @@ private:
 
 public:
 
-	int all_traverse(int which, const T& target = NULL); //put in public for testing purposes
-	Treap() {}
+	int all_traverse(int which, const T& target = NULL) const; //put in public for testing purposes
+	Treap();
 
 	~Treap() {}
 	Treap(const Treap& other); 
@@ -189,9 +189,65 @@ public:
 };
 
 
+template <class T>
+Treap<T>::Treap()
+{
+
+}
 
 template <class T>
-int Treap<T>::all_traverse(int which, const T& target = NULL) 
+void Treap<T>::insert(const  T& val)
+{
+	//Not dealing with priorities yet
+	
+	Node<T>* insert = new Node<T>(val);
+	
+	//Check to see if the tree is empty.
+	if(!root)
+		root = insert;
+	else
+	{
+		queue<Node <T>* > slim;
+		slim.push(root);
+		Node<T>* current = slim.front();
+
+		while(!slim.empty())
+		{
+			current = slim.front();
+			slim.pop();
+		
+			//do i need to check for equality??
+			//First check if it should go right or left.
+			//Then, if there is a R/L child, push it on stack.
+			//Else, if there isn't an R/L child, set the child.
+			if(val > current->meat)
+			{	
+				if(current->right)
+					slim.push(current->right);
+				else
+					current->right = insert;
+			}
+			if(val < current->meat)
+			{
+				if(current->right)
+					slim.push(current->left);
+				else
+					current->left = insert;
+			}
+		}
+	}
+}
+
+
+template <class T>
+int Treap<T>::size() const
+{
+	return all_traverse(0);
+}
+
+
+template <class T>
+int Treap<T>::all_traverse(int which, const T& target = NULL) const
 {
 	int meat = 0;	//default to false as well
 	queue< Node<T>* > slim;
@@ -222,6 +278,7 @@ int Treap<T>::all_traverse(int which, const T& target = NULL)
 				return 1;
 			break;
 		//contains() - returns if treap has the target
+		/////need to test this bit! T.T
 		case 3:
 			if(!(current->deleted)
 				&& current->meat == target)
