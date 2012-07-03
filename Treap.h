@@ -332,14 +332,15 @@ bool Treap<T>::empty() const
 	bool ans  = (all_traverse(2) == 1);
 	return !ans;
 }
-/*
+
 template <class T>
-bool contains(const T& meat) const
+bool Treap<T>::contains(const T& meat) const
 {
-	return all_traverse(3);
+	bool ans = (all_traverse(3, meat) ==1 );
+	return ans;
 	
 }
-*/
+
 //all traverse check for NULL works
 template <class T>
 int Treap<T>::all_traverse(int which, const T& target = NULL) const
