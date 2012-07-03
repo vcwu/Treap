@@ -24,8 +24,8 @@ struct Node
 	Node<T> * right;
 	Node<T> * left;
 
-	Node<T>(T val, unsigned int prior=0, Node<T>* l = 0, Node<T>* r = 0) 
-		: meat(val), priority(prior), right(r), left(l)
+	Node<T>(T val, bool del = false, unsigned int prior=0, Node<T>* l = 0, Node<T>* r = 0) 
+		: meat(val), deleted(del), priority(prior), right(r), left(l)
 	{};
 	//WILL THE MEAT have a copy constructor?? should i make
 	//it a pointer instead??
