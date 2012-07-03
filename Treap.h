@@ -23,8 +23,6 @@ Called on empty treap/Removing non existent value
 */
 class TreapException
 {
-public: 
-
 };
 
 template <class T>
@@ -326,7 +324,22 @@ int Treap<T>::deleted() const
 	return all_traverse(1);
 }
 
-
+template <class T>
+bool Treap<T>::empty() const
+{
+	//Note- all_traverse(2) is the equivalent of 
+	//NOTempty(). Thus returning the negation.
+	bool ans  = (all_traverse(2) == 1);
+	return !ans;
+}
+/*
+template <class T>
+bool contains(const T& meat) const
+{
+	return all_traverse(3);
+	
+}
+*/
 //all traverse check for NULL works
 template <class T>
 int Treap<T>::all_traverse(int which, const T& target = NULL) const
@@ -358,7 +371,7 @@ int Treap<T>::all_traverse(int which, const T& target = NULL) const
 			if(current->deleted)
 				meat++;
 			break;
-		//empty() -returns true if any node is not deleted
+		//notEmpty() -returns true if any node is not deleted
 		case 2:
 			if(!(current->deleted))
 				return 1;
