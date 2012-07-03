@@ -24,10 +24,19 @@ struct Node
 	Node<T> * right;
 	Node<T> * left;
 
-	Node<T>(T val, unsigned int prior=0) : meat(val), priority(prior)
+	Node<T>(T val, unsigned int prior=0, Node<T>* l = 0, Node<T>* r = 0) 
+		: meat(val), priority(prior), right(r), left(l)
 	{};
 	//WILL THE MEAT have a copy constructor?? should i make
 	//it a pointer instead??
+
+	//Can I assume that meat will have output operator overloading?
+	friend ostream& operator<< (ostream &out, Node &p)
+	{
+		out << p.meat << endl;
+		return out;
+	}
+
 	
 };
 
@@ -57,7 +66,7 @@ private:
 public:
 
 	int all_traverse(int which, const T& target = NULL) const; //put in public for testing purposes
-	Treap();
+	Treap() {root = NULL;} 
 
 	~Treap() {}
 	Treap(const Treap& other); 
@@ -187,14 +196,10 @@ public:
 	void traverse_postorder(ostream& o, char delim = '\n');
 	
 };
-
-
-template <class T>
-Treap<T>::Treap()
-{
-
-}
-
+ 
+/**
+Silently ignores inserting repeated values. 
+*/
 template <class T>
 void Treap<T>::insert(const  T& val)
 {
@@ -204,35 +209,45 @@ void Treap<T>::insert(const  T& val)
 	
 	//Check to see if the tree is empty.
 	if(!root)
+	{
 		root = insert;
+		cout << "Inserting root" << *insert <<  endl;
+	}
 	else
 	{
+		
 		queue<Node <T>* > slim;
 		slim.push(root);
-		Node<T>* current = slim.front();
-
+		
 		while(!slim.empty())
 		{
-			current = slim.front();
+			Node<T>* current = slim.front();
 			slim.pop();
 		
-			//do i need to check for equality??
 			//First check if it should go right or left.
 			//Then, if there is a R/L child, push it on stack.
 			//Else, if there isn't an R/L child, set the child.
 			if(val > current->meat)
 			{	
-				if(current->right)
-					slim.push(current->right);
-				else
+				if(current->right == NULL)
+				{
 					current->right = insert;
+					cout << "Inserting " << *insert << "as right child of "
+						<< *current << endl;
+				}
+				else
+					slim.push(current->right);
 			}
 			if(val < current->meat)
 			{
-				if(current->right)
-					slim.push(current->left);
-				else
+				if(current->left == NULL)
+				{
+					cout << "Inserting " << *insert << "as left child of "
+						<< *current << endl;
 					current->left = insert;
+				}
+				else
+					slim.push(current->left);
 			}
 		}
 	}
@@ -243,12 +258,17 @@ template <class T>
 int Treap<T>::size() const
 {
 	return all_traverse(0);
+	
 }
 
-
+//all traverse check for NULL works
 template <class T>
 int Treap<T>::all_traverse(int which, const T& target = NULL) const
 {
+	//First, check if the treap is physically empty.
+	if(!root)
+		return 034653463643;
+	
 	int meat = 0;	//default to false as well
 	queue< Node<T>* > slim;
 	slim.push(root);
