@@ -13,6 +13,19 @@ preventing an overly imbalanced tree.
 #include <iostream>
 using namespace std;
 
+/**
+TreapException is thrown when
+Called on empty treap/Removing non existent value
+	remove() 
+	remove_min, remove_max
+	find_min, find_max
+
+*/
+class TreapException
+{
+public: 
+
+};
 
 template <class T>
 struct Node
@@ -253,6 +266,52 @@ void Treap<T>::insert(const  T& val)
 	}
 }
 
+template <class T>
+T Treap<T>::remove(const T& val)
+{
+	//If called on an empty tree, throws exception
+	if(!root)
+		throw TreapException();	//shall I assume it will be caught outside?
+
+	
+	queue< Node<T>* > slim;
+	slim.push(root);
+	Node<T>* current = slim.front();
+
+	while(!slim.empty())
+	{
+		current = slim.front();
+		slim.pop();
+		
+		if(val > current->meat)
+		{	
+			//Can't find value! 
+			if(current->right == NULL)
+			{
+				throw TreapException();
+			}
+			else
+				slim.push(current->right);
+		}
+		else if(val < current->meat)
+		{
+			//Can't find value! 
+			if(current->left == NULL)
+			{
+				throw TreapException();
+			}
+			else
+				slim.push(current->left);
+		}
+		else
+		{
+			//Hey, we found it!!
+			current->deleted = true;
+		}
+	}
+	return current->meat;
+}
+
 
 template <class T>
 int Treap<T>::size() const
@@ -261,13 +320,20 @@ int Treap<T>::size() const
 	
 }
 
+template <class T>
+int Treap<T>::deleted() const
+{
+	return all_traverse(1);
+}
+
+
 //all traverse check for NULL works
 template <class T>
 int Treap<T>::all_traverse(int which, const T& target = NULL) const
 {
 	//First, check if the treap is physically empty.
 	if(!root)
-		return 034653463643;
+		return 0;
 	
 	int meat = 0;	//default to false as well
 	queue< Node<T>* > slim;
