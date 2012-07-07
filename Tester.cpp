@@ -68,13 +68,14 @@ int main()
 
 	cout << "Size is "<<other->size() <<endl;
 	cout << "Contains " << other->contains(hey) << endl;
-	
+	cout << "How many deleted? " << other->deleted() << endl;
 	other->remove(hey);
 
 	cout << "Contains " << other->contains(hey) << endl;
 	
 	cout << "Size is "<<other->size() <<endl;
 	
+	cout << "How many deleted? " << other->deleted() << endl;
 	int h;
 	cin >> h;
 }
