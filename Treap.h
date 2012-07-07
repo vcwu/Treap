@@ -41,12 +41,17 @@ struct Node
 	//WILL THE MEAT have a copy constructor?? should i make
 	//it a pointer instead??
 
+
+
+
+	//!_------------------FOR TESTING ONLY-----------------------
 	//Can I assume that meat will have output operator overloading?
 	friend ostream& operator<< (ostream &out, Node &p)
 	{
 		out << p.meat << endl;
 		return out;
 	}
+	//!_------------------FOR TESTING ONLY-----------------------
 
 	
 };
