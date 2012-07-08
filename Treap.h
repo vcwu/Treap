@@ -217,6 +217,9 @@ public:
  
 /**
 Silently ignores inserting repeated values. 
+
+Note- run time error when trying to remove something that hasn't been 
+initialized
 */
 template <class T>
 void Treap<T>::insert(const  T& val)
@@ -317,8 +320,13 @@ T Treap<T>::remove(const T& val)
 		}
 		else
 		{
-			//Hey, we found it!!
-			current->deleted = true;
+			//Hey, we found a node that has that value...
+			//Is it deleted already?
+			if(current->deleted)
+				throw TreapException();	//Can't remove something 
+										//that's already gone
+			else
+				current->deleted = true;
 		}
 	}
 	return current->meat;

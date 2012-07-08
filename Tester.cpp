@@ -55,10 +55,13 @@ int main()
 	cout << "Empty?" << meat->empty() << endl;
 	*/
 
+	//=====================================================
+	//MAKING OUR TEST SUBJECTS
+	//=====================================================
 
-
-	/*Making a Testing Tree
-	------------------------------------------------
+	//Making a Testing Tree, normal.
+	//------------------------------------------------
+	/*
 	-before priority, should look like this:
 
 	           8
@@ -76,21 +79,44 @@ int main()
 	Reverseorder: 15 14 13 ... and so on
 	*/
 
-	Student hey;
+	Student hey(999999);
 	Student smallest(0);
 
 	//Forcing our tree to look like the example
 	int nums[15] = {8,4,12,2,6,10,14,1,3,5,7,9,11,13,15 };
-	
+	Student allStudents[15];
 	Treap<Student>* other = new Treap<Student>();
-	
-	for(int x =0; x < 15; x	++)
+
+	for(int x = 0; x <15; x++)
 	{
-		hey =  Student(nums[x]);
-		other->insert(hey);
+		allStudents[x] = Student(nums[x]);
+		other->insert(allStudents[x]);
 	}
+
 	other->insert(smallest);
 
+	//Making a Testing Tree, with One physical obj. 
+	//------------------------------------------------
+	Treap<Student>* onePhysical = new Treap<Student>();
+	onePhysical->insert(Student(9999));
+
+	//Making a Testing Tree, with many physical, one logical obj. 
+	//------------------------------------------------
+	Treap<Student>* oneLogical = new Treap<Student>();
+
+
+	oneLogical->insert(Student(9999));
+
+	//Making a Testing Tree, empty, for TreapException
+	//------------------------------------------------
+
+	Treap<Student>* empty = new Treap<Student>();
+
+
+
+	//=====================================================
+	//TESTING STUFF 
+	//=====================================================
 
 	//Testing Size, Contains, Deleted, Empty
 	//-------------------------------------------
@@ -111,6 +137,8 @@ int main()
 	//Testing Traversals
 	//-------------------------------------------
 
+	try
+	{
 	cout << endl << "Preorder Traversal ";
 	other->traverse_preorder(cout, ' ');
 	cout  << endl << "Postorder Traversal ";
@@ -155,6 +183,13 @@ int main()
 	cout << endl << "Find min ";
 	cout << other->find_min() << endl;
 
+
+
+	}
+	catch( TreapException e)
+	{
+		cout << "Hey you caught a TreapException! " << endl;
+	}
 	int h;
 	cin >> h;
 }
