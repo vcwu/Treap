@@ -77,6 +77,8 @@ int main()
 	*/
 
 	Student hey;
+	Student smallest(0);
+
 	//Forcing our tree to look like the example
 	int nums[15] = {8,4,12,2,6,10,14,1,3,5,7,9,11,13,15 };
 	
@@ -87,7 +89,11 @@ int main()
 		hey =  Student(nums[x]);
 		other->insert(hey);
 	}
+	other->insert(smallest);
 
+
+	//Testing Size, Contains, Deleted, Empty
+	//-------------------------------------------
 	/*
 	cout << "Size is "<<other->size() <<endl;
 	cout << "Contains " << other->contains(hey) << endl;
@@ -99,7 +105,11 @@ int main()
 	cout << "Size is "<<other->size() <<endl;
 	
 	cout << "How many deleted? " << other->deleted() << endl;
+	cout << "Empty?" << other->empty() << endl;
 	*/
+
+	//Testing Traversals
+	//-------------------------------------------
 
 	cout << endl << "Preorder Traversal ";
 	other->traverse_preorder(cout, ' ');
@@ -132,7 +142,19 @@ int main()
 	other->traverse_inorder(cout, ' ');
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
+
+
+	//Testing Find Min
+	//-------------------------------------------
+	cout << endl << "Find min ";
+	cout << other->find_min() << endl;
+
+	cout << "Removing " << smallest << endl;
+	other->remove(smallest);
 	
+	cout << endl << "Find min ";
+	cout << other->find_min() << endl;
+
 	int h;
 	cin >> h;
 }
