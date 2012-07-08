@@ -537,19 +537,17 @@ void Treap<T>::traverse_inorder(ostream& o, char delim = '\n')
 template <class T>
 void Treap<T>::traverse_reverseorder(ostream& o, char delim = '\n')
 {
-	//Same thing as inorder, just backwards. 
-	//Hello, my wonderful stack.
 
 	/*
-	Code for inorder traversal taken from leetcode.com article 
+	Code for reverse order traversal modified from leetcode.com article 
 	http://www.leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
 	*/
 	
 	Node <T> *current = root;
 	stack <Node <T>* > meat;
-	stack <Node <T>* > backwards;
-	
-	//In order traversal...
+	//Similar to in order, just switch right and left pointers. 
+	//Drive all the way to the right, keeping track of parents in stack.
+	//When you get to right most node, pop to go up, go left, and repeat. 
 	while(current)
 	{
 		while(!meat.empty() || current)
@@ -557,28 +555,22 @@ void Treap<T>::traverse_reverseorder(ostream& o, char delim = '\n')
 			if(current)
 			{
 				meat.push(current);
-				current = current->left;
+				//Modified: Go all the way right
+				current = current->right;
 			}
 			else
 			{
 				current = meat.top();
 				meat.pop();
-				//Modified: Check for deletion
+				//Modified: Check for deletion, go left one
 				if(!current->deleted)
-					backwards.push(current);
+					o << current->meat << delim;
+				current = current->left;
 				//end mod
-				current = current->right;
 			}
 		}
 	}
-
-	//Going backwards on the inorder traversal! 
-	while(!backwards.empty())
-	{
-		current = backwards.top();
-		o << current->meat << delim;
-		backwards.pop();
-	}
+	
 }
 
 template <class T>
@@ -600,6 +592,54 @@ T Treap<T>::find_min() const
 
 	/*
 	In order traversal through the nodes, until a non deleted is found
+	-------------------------------------------------------------------
+	Go all the way to the left until you reach a leaf node, 
+	keeping track of parents in a stack. Once you reach a node
+	with no left children, go to its right child and repeat. 
+	*/
+	while(current)
+	{
+		while(!meat.empty() || current)
+		{
+			if(current)
+			{
+				meat.push(current);
+				current = current->left;
+			}
+			else
+			{
+				current = meat.top();
+				meat.pop();
+				//Modified: Check for deletion, return if not deleted
+				if(!current->deleted)
+					return current->meat;
+				//end mod
+				current = current->right;
+			}
+		}
+	}
+}
+
+
+template <class T>
+T Treap<T>::find_max() const
+{
+	
+	//If called on an empty tree, throws exception
+	if(!root)
+		throw TreapException();	//shall I assume it will be caught outside?
+
+	/*
+	Code for inorder traversal modified from leetcode.com article 
+	http://www.leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
+	*/
+
+	Node <T> *current = root;
+	stack <Node <T>* > meat;
+
+
+	/*
+	Reverse order traversal through the nodes, until a non deleted is found
 	-------------------------------------------------------------------
 	Go all the way to the left until you reach a leaf node, 
 	keeping track of parents in a stack. Once you reach a node
