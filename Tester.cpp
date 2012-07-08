@@ -79,7 +79,6 @@ int main()
 	Reverseorder: 15 14 13 ... and so on
 	*/
 
-	Student hey(999999);
 	Student smallest(0);
 
 	//Forcing our tree to look like the example
@@ -148,8 +147,8 @@ int main()
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
 
-	cout << "Removing " << hey << endl;
-	other->remove(hey);
+	cout << "Removing " << allStudents[4] << endl;
+	other->remove(allStudents[4]);
 
 	cout << endl << "Preorder Traversal ";
 	other->traverse_preorder(cout, ' ');
@@ -160,8 +159,8 @@ int main()
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
 
-	cout << "Reinserting " << hey << endl;
-	other->insert(hey);
+	cout << "Reinserting " << allStudents[4] << endl;
+	other->insert(allStudents[4]);
 	cout << endl << "Preorder Traversal ";
 	other->traverse_preorder(cout, ' ');
 	cout  << endl << "Postorder Traversal ";
@@ -183,6 +182,21 @@ int main()
 	cout << endl << "Find min ";
 	cout << other->find_min() << endl;
 
+	//Testing Removing 
+	//-------------------------------------------
+	//Removing a non existant node.
+	
+	Student hey(999999);	
+	cout << "Removing non existant node" << hey << endl;
+	other->remove(hey);	
+	
+
+	//Removing a physically present, logically del node.
+	cout << "Removing " << allStudents[2] << endl;
+	other->remove(allStudents[2]);
+	cout << "Removing again " << allStudents[2] << endl;
+	other->remove(allStudents[2]);
+	
 
 
 	}
