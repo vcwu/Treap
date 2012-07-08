@@ -518,3 +518,50 @@ void Treap<T>::traverse_inorder(ostream& o, char delim = '\n')
 		}
 	}
 }
+
+template <class T>
+void Treap<T>::traverse_reverseorder(ostream& o, char delim = '\n')
+{
+	//Same thing as inorder, just backwards. 
+	//Hello, my wonderful stack.
+
+	/*
+	Code for inorder traversal taken from leetcode.com article 
+	http://www.leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
+	*/
+	
+	Node <T> *current = root;
+	stack <Node <T>* > meat;
+	stack <Node <T>* > backwards;
+	
+	//In order traversal...
+	while(current)
+	{
+		while(!meat.empty() || current)
+		{
+			if(current)
+			{
+				meat.push(current);
+				current = current->left;
+			}
+			else
+			{
+				current = meat.top();
+				meat.pop();
+				//Modified: Check for deletion
+				if(!current->deleted)
+					backwards.push(current);
+				//end mod
+				current = current->right;
+			}
+		}
+	}
+
+	//Going backwards on the inorder traversal! 
+	while(!backwards.empty())
+	{
+		current = backwards.top();
+		o << current->meat << delim;
+		backwards.pop();
+	}
+}

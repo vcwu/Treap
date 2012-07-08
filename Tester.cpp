@@ -107,7 +107,8 @@ int main()
 	other->traverse_postorder(cout, ' ');
 	cout  << endl << "Inorder Traversal ";
 	other->traverse_inorder(cout, ' ');
-
+	cout  << endl << "Reverse order Traversal ";
+	other->traverse_reverseorder(cout, ' ');
 
 	cout << "Removing " << hey << endl;
 	other->remove(hey);
@@ -118,7 +119,9 @@ int main()
 	other->traverse_postorder(cout, ' ');
 	cout  << endl << "Inorder Traversal ";
 	other->traverse_inorder(cout, ' ');
-	
+	cout  << endl << "Reverse order Traversal ";
+	other->traverse_reverseorder(cout, ' ');
+
 	int h;
 	cin >> h;
 }
