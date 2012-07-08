@@ -412,7 +412,7 @@ void Treap<T>::traverse_preorder(ostream& o, char delim = '\n')
 
 	Node<T> * p = root;
 	stack< Node<T> *> meat;
-	if(p)  //make sure the tree isn't empt
+	if(p)  //make sure the tree isn't empty
 	{
 		meat.push(p);
 		while(!meat.empty())
@@ -423,12 +423,58 @@ void Treap<T>::traverse_preorder(ostream& o, char delim = '\n')
 			//Modified to check if node is del or not.
 			if(!p->deleted)
 				o << p->meat << delim;
+			//End mod
 
 			if(p->right)
 				meat.push(p->right);
 			if(p->left)
 				meat.push(p->left);
 		}	
+	}
+
+}
+
+template <class T>
+void Treap<T>::traverse_postorder(ostream& o, char delim = '\n')
+{
+	/*
+	Code modified from iterative preorder from Data Structures 
+	and Algorithms in C++ by Adam Drozdek, Sec 6.4
+	*/
+
+	Node <T> *p = root;
+	stack< Node<T> *> meat;
+	stack< Node<T> *> backwards;
+
+	if(p)
+	{
+		meat.push(p);
+		while(!meat.empty())
+		{
+			p = meat.top();
+
+			//Push preorder nodes in a stack, then pop out
+			//backwards for postorder.
+			if(!p->deleted)
+				backwards.push(p);
+
+			meat.pop();
+
+			//Want backwards to have [Root, R, L
+			//so we first push left onto meat
+			//Meat [left, right
+			if(p->left)
+				meat.push(p->left);
+			if(p->right)
+				meat.push(p->right);
+		}
+
+		//Now, pop backwards out to get postorder.
+		while(!backwards.empty())
+		{
+			o << backwards.top()->meat << delim;
+			backwards.pop();
+		}
 	}
 
 }

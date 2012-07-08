@@ -101,9 +101,21 @@ int main()
 	cout << "How many deleted? " << other->deleted() << endl;
 	*/
 
+	cout << "Preorder Traversal " << endl;
 	other->traverse_preorder(cout);
+	cout << "Postorder Traversal " << endl;
+	other->traverse_postorder(cout);
+
+
+
+	cout << "Removing " << hey << endl;
 	other->remove(hey);
+
+	cout << "Preorder Traversal " << endl;
 	other->traverse_preorder(cout);
+	cout << "Postorder Traversal " << endl;
+	other->traverse_postorder(cout);
+
 	int h;
 	cin >> h;
 }
