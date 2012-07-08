@@ -139,6 +139,8 @@ int main()
 	try
 	{
 	/*
+	cout << endl <<endl<< "Traversing through a normal tree"
+		<< endl << "--------------------------" << endl;
 	cout << endl << "Preorder Traversal ";
 	other->traverse_preorder(cout, ' ');
 	cout  << endl << "Postorder Traversal ";
@@ -172,6 +174,28 @@ int main()
 	other->traverse_reverseorder(cout, ' ');
 	*/
 
+	cout << endl <<endl<< "Traversing through a logical one node tree"
+		<< endl << "--------------------------" << endl;
+	cout << endl << "Preorder Traversal ";
+	oneLogical->traverse_preorder(cout, ' ');
+	cout  << endl << "Postorder Traversal ";
+	oneLogical->traverse_postorder(cout, ' ');
+	cout  << endl << "Inorder Traversal ";
+	oneLogical->traverse_inorder(cout, ' ');
+	cout  << endl << "Reverse order Traversal ";
+	oneLogical->traverse_reverseorder(cout, ' ');
+
+	cout << endl <<endl << "Traversing through empty tree"
+		<< endl << "--------------------------" << endl;
+	cout << endl << "Preorder Traversal ";
+	empty->traverse_preorder(cout, ' ');
+	cout  << endl << "Postorder Traversal ";
+	empty->traverse_postorder(cout, ' ');
+	cout  << endl << "Inorder Traversal ";
+	empty->traverse_inorder(cout, ' ');
+	cout  << endl << "Reverse order Traversal ";
+	empty->traverse_reverseorder(cout, ' ');
+
 	//Testing Find Min
 	//-------------------------------------------
 	/*
@@ -184,6 +208,8 @@ int main()
 	cout << endl << "Find min ";
 	cout << other->find_min() << endl;
 	*/
+	cout << endl <<endl<< "Finding Min of one node tree"
+		<< endl << "--------------------------" << endl;
 	cout << endl << "Find min ";
 	cout << oneLogical->find_min() << endl;
 
