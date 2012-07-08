@@ -122,6 +122,17 @@ int main()
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
 
+	cout << "Reinserting " << hey << endl;
+	other->insert(hey);
+	cout << endl << "Preorder Traversal ";
+	other->traverse_preorder(cout, ' ');
+	cout  << endl << "Postorder Traversal ";
+	other->traverse_postorder(cout, ' ');
+	cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');
+	cout  << endl << "Reverse order Traversal ";
+	other->traverse_reverseorder(cout, ' ');
+	
 	int h;
 	cin >> h;
 }

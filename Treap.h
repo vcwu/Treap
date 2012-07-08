@@ -267,6 +267,13 @@ void Treap<T>::insert(const  T& val)
 				else
 					slim.push(current->left);
 			}
+			//If value is  physically present,  but logically deleted
+			//mark it as non deleted again.
+			if(val == current->meat)
+			{
+				if(current->deleted)
+					current->deleted = false;
+			}
 		}
 	}
 }
