@@ -173,7 +173,7 @@ int main()
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
 	*/
-
+	/*
 	cout << endl <<endl<< "Traversing through a logical one node tree"
 		<< endl << "--------------------------" << endl;
 	cout << endl << "Preorder Traversal ";
@@ -195,19 +195,12 @@ int main()
 	empty->traverse_inorder(cout, ' ');
 	cout  << endl << "Reverse order Traversal ";
 	empty->traverse_reverseorder(cout, ' ');
-
-	//Testing Find Min
-	//-------------------------------------------
-	/*
-	cout << endl << "Find min ";
-	cout << other->find_min() << endl;
-
-	cout << "Removing " << smallest << endl;
-	other->remove(smallest);
-	
-	cout << endl << "Find min ";
-	cout << other->find_min() << endl;
 	*/
+	//Testing Find Min, find max
+	//Find min works great. Find max... doesn't find max if max deletes.
+	//-------------------------------------------
+
+	/*
 	cout << endl <<endl<< "Finding Min of one node tree"
 		<< endl << "--------------------------" << endl;
 	cout << endl << "Find min ";
@@ -218,6 +211,52 @@ int main()
 	
 	cout << endl << "Find min ";
 	cout << oneLogical->find_min() << endl;
+	*/
+	/*
+	cout << endl <<endl<< "Finding Max of one node tree"
+		<< endl << "--------------------------" << endl;
+	cout << endl << "Find max ";
+	cout << oneLogical->find_max() << endl;
+
+	cout << "Removing " << smallest << endl;
+	oneLogical->remove(smallest);
+	
+	//cout << endl << "Find max ";
+	//cout << oneLogical->find_max() << endl;
+	*/
+	cout << endl <<endl<< "Finding Min of normal tree"
+		<< endl << "--------------------------" << endl;
+	cout << endl << "Find min ";
+	cout << other->find_min() << endl;
+
+	cout << "Removing " << smallest << endl;
+	other->remove(smallest);
+	
+	cout << endl << "Find min ";
+	cout << other->find_min() << endl;
+
+	cout << "Removing " << allStudents[7] << endl;
+	other->remove(allStudents[7]);
+
+	cout << endl << "Find min ";
+	cout << other->find_min() << endl;
+
+	cout << endl <<endl<< "Finding Max of normal tree"
+		<< endl << "--------------------------" << endl;
+	cout << endl << "Find max ";
+	cout << other->find_max() << endl;
+
+	cout << "Removing " << allStudents[14] << endl;
+	other->remove( allStudents[14]);
+	
+	cout << endl << "Find max ";
+	cout << other->find_max() << endl;
+
+	cout << "Removing " << allStudents[6] << endl;
+	other->remove( allStudents[6]);
+	
+	cout << endl << "Find max ";
+	cout << other->find_max() << endl;
 
 	//Testing Removing 
 	//-------------------------------------------
