@@ -618,6 +618,9 @@ T Treap<T>::find_min() const
 			}
 		}
 	}
+
+	//If the treap is logically empty, will never return anything.
+	throw TreapException();
 }
 
 
@@ -630,21 +633,18 @@ T Treap<T>::find_max() const
 		throw TreapException();	//shall I assume it will be caught outside?
 
 	/*
-	Code for inorder traversal modified from leetcode.com article 
+	Code for reverse order traversal modified from leetcode.com article 
 	http://www.leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
 	*/
-
+	
 	Node <T> *current = root;
 	stack <Node <T>* > meat;
+	
+	//Reverse order traversal, first non deleted node is max. 
 
-
-	/*
-	Reverse order traversal through the nodes, until a non deleted is found
-	-------------------------------------------------------------------
-	Go all the way to the left until you reach a leaf node, 
-	keeping track of parents in a stack. Once you reach a node
-	with no left children, go to its right child and repeat. 
-	*/
+	//Similar to in order, just switch right and left pointers. 
+	//Drive all the way to the right, keeping track of parents in stack.
+	//When you get to right most node, pop to go up, go left, and repeat. 
 	while(current)
 	{
 		while(!meat.empty() || current)
@@ -652,18 +652,21 @@ T Treap<T>::find_max() const
 			if(current)
 			{
 				meat.push(current);
-				current = current->left;
+				//Modified: Go all the way right
+				current = current->right;
 			}
 			else
 			{
 				current = meat.top();
 				meat.pop();
-				//Modified: Check for deletion, return if not deleted
+				//Modified: Check for deletion, go left one
 				if(!current->deleted)
 					return current->meat;
+				current = current->left;
 				//end mod
-				current = current->right;
 			}
 		}
 	}
+	//If the treap is logically empty, will never return anything.
+	throw TreapException();
 }

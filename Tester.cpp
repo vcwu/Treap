@@ -104,7 +104,7 @@ int main()
 	Treap<Student>* oneLogical = new Treap<Student>();
 
 
-	oneLogical->insert(Student(9999));
+	oneLogical->insert(smallest);
 
 	//Making a Testing Tree, empty, for TreapException
 	//------------------------------------------------
@@ -138,6 +138,7 @@ int main()
 
 	try
 	{
+	/*
 	cout << endl << "Preorder Traversal ";
 	other->traverse_preorder(cout, ' ');
 	cout  << endl << "Postorder Traversal ";
@@ -169,10 +170,11 @@ int main()
 	other->traverse_inorder(cout, ' ');
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
-
+	*/
 
 	//Testing Find Min
 	//-------------------------------------------
+	/*
 	cout << endl << "Find min ";
 	cout << other->find_min() << endl;
 
@@ -181,22 +183,32 @@ int main()
 	
 	cout << endl << "Find min ";
 	cout << other->find_min() << endl;
+	*/
+	cout << endl << "Find min ";
+	cout << oneLogical->find_min() << endl;
+
+	cout << "Removing " << smallest << endl;
+	oneLogical->remove(smallest);
+	
+	cout << endl << "Find min ";
+	cout << oneLogical->find_min() << endl;
 
 	//Testing Removing 
 	//-------------------------------------------
 	//Removing a non existant node.
 	
 	Student hey(999999);	
-	cout << "Removing non existant node" << hey << endl;
-	other->remove(hey);	
+	//cout << "Removing non existant node" << hey << endl;
+	//other->remove(hey);	
 	
 
 	//Removing a physically present, logically del node.
+	/*
 	cout << "Removing " << allStudents[2] << endl;
 	other->remove(allStudents[2]);
 	cout << "Removing again " << allStudents[2] << endl;
 	other->remove(allStudents[2]);
-	
+	*/
 
 
 	}
