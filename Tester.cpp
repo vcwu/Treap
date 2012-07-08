@@ -162,16 +162,6 @@ int main()
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
 
-	cout << "Reinserting " << allStudents[4] << endl;
-	other->insert(allStudents[4]);
-	cout << endl << "Preorder Traversal ";
-	other->traverse_preorder(cout, ' ');
-	cout  << endl << "Postorder Traversal ";
-	other->traverse_postorder(cout, ' ');
-	cout  << endl << "Inorder Traversal ";
-	other->traverse_inorder(cout, ' ');
-	cout  << endl << "Reverse order Traversal ";
-	other->traverse_reverseorder(cout, ' ');
 	*/
 	/*
 	cout << endl <<endl<< "Traversing through a logical one node tree"
@@ -196,8 +186,8 @@ int main()
 	cout  << endl << "Reverse order Traversal ";
 	empty->traverse_reverseorder(cout, ' ');
 	*/
+
 	//Testing Find Min, find max
-	//Find min works great. Find max... doesn't find max if max deletes.
 	//-------------------------------------------
 
 	/*
@@ -276,8 +266,24 @@ int main()
 	*/
 
 
+	//Testing Remove min, remove max
+	//-------------------------------------------
+	cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');
+	cout <<endl << "Removing min.. " << other->remove_min() <<endl;
+	cout <<endl << "Removing max.. " << other->remove_max() <<endl;
+	cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');
+
+	cout  << endl << "Inorder Traversal ";
+	onePhysical->traverse_inorder(cout, ' ');
+	//cout <<endl << "Removing min.. " << onePhysical->remove_min() <<endl;
+	cout <<endl << "Removing max.. " << onePhysical->remove_max() <<endl;
+	cout  << endl << "Inorder Traversal ";
+	onePhysical->traverse_inorder(cout, ' ');
+
 	}
-	catch( TreapException e)
+	catch( TreapException )
 	{
 		cout << "Hey you caught a TreapException! " << endl;
 	}
