@@ -46,11 +46,13 @@ struct Node
 
 	//!_------------------FOR TESTING ONLY-----------------------
 	//Can I assume that meat will have output operator overloading?
+	/*
 	friend ostream& operator<< (ostream &out, Node &p)
 	{
 		out << p.meat << endl;
 		return out;
 	}
+	*/
 	//!_------------------FOR TESTING ONLY-----------------------
 
 	
@@ -227,7 +229,7 @@ void Treap<T>::insert(const  T& val)
 	if(!root)
 	{
 		root = insert;
-		cout << "Inserting root" << *insert <<  endl;
+		cout << "Inserting root" << insert->meat <<  endl;
 	}
 	else
 	{
@@ -248,8 +250,8 @@ void Treap<T>::insert(const  T& val)
 				if(current->right == NULL)
 				{
 					current->right = insert;
-					cout << "Inserting " << *insert << "as right child of "
-						<< *current << endl;
+					cout << "Inserting " << insert->meat << "as right child of "
+						<< current->meat << endl;
 				}
 				else
 					slim.push(current->right);
@@ -258,8 +260,8 @@ void Treap<T>::insert(const  T& val)
 			{
 				if(current->left == NULL)
 				{
-					cout << "Inserting " << *insert << "as left child of "
-						<< *current << endl;
+					cout << "Inserting " << insert->meat << "as left child of "
+						<< current->meat << endl;
 					current->left = insert;
 				}
 				else
@@ -400,3 +402,33 @@ int Treap<T>::all_traverse(int which, const T& target = NULL) const
 	return meat;
 }
 
+template <class T>
+void Treap<T>::traverse_preorder(ostream& o, char delim = '\n')
+{
+	/*
+	Code for preorder traversal taken from Data Structures 
+	and Algorithms in C++ by Adam Drozdek, Sec 6.4
+	*/
+
+	Node<T> * p = root;
+	stack< Node<T> *> meat;
+	if(p)  //make sure the tree isn't empt
+	{
+		meat.push(p);
+		while(!meat.empty())
+		{
+			p = meat.top();
+			meat.pop();
+			
+			//Modified to check if node is del or not.
+			if(!p->deleted)
+				o << p->meat << delim;
+
+			if(p->right)
+				meat.push(p->right);
+			if(p->left)
+				meat.push(p->left);
+		}	
+	}
+
+}

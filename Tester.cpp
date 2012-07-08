@@ -26,7 +26,7 @@ public:
 	
 	friend ostream& operator<< (ostream& out, Student& s1)
 	{
-		out<< "Student ID: " <<s1.id << endl;
+		out<< "Student ID: " <<s1.id ;
 		return out;
 	}
 };
@@ -55,17 +55,40 @@ int main()
 	cout << "Empty?" << meat->empty() << endl;
 	*/
 
-	//testing with student obj
+
+
+	/*Making a Testing Tree
+	------------------------------------------------
+	-before priority, should look like this:
+
+	           8
+			/	  \
+		 /          \
+	    4            12
+	  /   \        /   \
+	 2     6     10     14
+	 /\    /\    /\     /\
+	1  3  5  7  9  11  13  15
+
+	Inorder: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+	Preorder: 8 4 2 1 3 6 5 7 12 10 9 11 14 13 15
+	Postorder: 1 3 2 5 7 6 4 9 11 10 13 15 14 12 8 
+	Reverseorder: 15 14 13 ... and so on
+	*/
 
 	Student hey;
-
+	//Forcing our tree to look like the example
+	int nums[15] = {8,4,12,2,6,10,14,1,3,5,7,9,11,13,15 };
+	
 	Treap<Student>* other = new Treap<Student>();
-	for(int x =0; x < 5; x++)
+	
+	for(int x =0; x < 15; x	++)
 	{
-		hey =  Student(x);
+		hey =  Student(nums[x]);
 		other->insert(hey);
 	}
 
+	/*
 	cout << "Size is "<<other->size() <<endl;
 	cout << "Contains " << other->contains(hey) << endl;
 	cout << "How many deleted? " << other->deleted() << endl;
@@ -76,6 +99,11 @@ int main()
 	cout << "Size is "<<other->size() <<endl;
 	
 	cout << "How many deleted? " << other->deleted() << endl;
+	*/
+
+	other->traverse_preorder(cout);
+	other->remove(hey);
+	other->traverse_preorder(cout);
 	int h;
 	cin >> h;
 }
