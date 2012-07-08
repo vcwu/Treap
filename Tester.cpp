@@ -26,7 +26,7 @@ public:
 	
 	friend ostream& operator<< (ostream& out, Student& s1)
 	{
-		out<< "Student ID: " <<s1.id ;
+		out <<s1.id ;
 		return out;
 	}
 };
@@ -101,21 +101,24 @@ int main()
 	cout << "How many deleted? " << other->deleted() << endl;
 	*/
 
-	cout << "Preorder Traversal " << endl;
-	other->traverse_preorder(cout);
-	cout << "Postorder Traversal " << endl;
-	other->traverse_postorder(cout);
-
+	cout << endl << "Preorder Traversal ";
+	other->traverse_preorder(cout, ' ');
+	cout  << endl << "Postorder Traversal ";
+	other->traverse_postorder(cout, ' ');
+	cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');
 
 
 	cout << "Removing " << hey << endl;
 	other->remove(hey);
 
-	cout << "Preorder Traversal " << endl;
-	other->traverse_preorder(cout);
-	cout << "Postorder Traversal " << endl;
-	other->traverse_postorder(cout);
-
+	cout << endl << "Preorder Traversal ";
+	other->traverse_preorder(cout, ' ');
+	cout  << endl << "Postorder Traversal ";
+	other->traverse_postorder(cout, ' ');
+	cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');
+	
 	int h;
 	cin >> h;
 }

@@ -407,7 +407,7 @@ void Treap<T>::traverse_preorder(ostream& o, char delim = '\n')
 {
 	/*
 	Code for preorder traversal taken from Data Structures 
-	and Algorithms in C++ by Adam Drozdek, Sec 6.4
+	and Algorithms in C++ by Adam Drozdek, Sec 6.4.2 pg 153
 	*/
 
 	Node<T> * p = root;
@@ -477,4 +477,44 @@ void Treap<T>::traverse_postorder(ostream& o, char delim = '\n')
 		}
 	}
 
+}
+
+
+template <class T>
+void Treap<T>::traverse_inorder(ostream& o, char delim = '\n')
+{
+	/*
+	Code for inorder traversal taken from leetcode.com article 
+	http://www.leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
+	*/
+	
+	Node <T> *current = root;
+	stack <Node <T>* > meat;
+
+	/*
+	Go all the way to the left until you reach a leaf node, 
+	keeping track of parents in a stack. Once you reach a node
+	with no left children, go to its right child and repeat. 
+	*/
+	while(current)
+	{
+		while(!meat.empty() || current)
+		{
+			if(current)
+			{
+				meat.push(current);
+				current = current->left;
+			}
+			else
+			{
+				current = meat.top();
+				meat.pop();
+				//Modified: Check for deletion
+				if(!current->deleted)
+					o << current->meat << delim;
+				//end mod
+				current = current->right;
+			}
+		}
+	}
 }
