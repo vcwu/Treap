@@ -381,6 +381,7 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 						<< current->meat << endl;
 					physical++;
 					logical++;
+					rightChild.push(true);
 				}
 				else
 				{
@@ -398,6 +399,7 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 					current->left = insert;
 					physical++;
 					logical++;
+					rightChild.push(false);
 				}
 				else
 				{
@@ -434,40 +436,61 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 		{
 			Node<T>* parent = parents.top();
 			parents.pop();
-			
+
+			//Is the child of parent node par a right or left child?
+			bool parentRight = rightChild.top();
+			rightChild.pop();
+
 			while(!parents.empty() && insert->priority < parent->priority)
 			{
 				//Priorities are out of sync, must rotate.
 
-				//Is the child of parent node par a right or left child?
-				bool right = rightChild.top();
+				//Pop for grandparent
+				Node<T>* grand = parents.top();
+				parents.pop();
+
+				//is the child of grandparent node right or left?
+				bool grandRight = rightChild.top();
 				rightChild.pop();
 
 				//Parent par had a right child.
-				if(right)
+				if(parentRight)
 				{
 					//Left rotation.
 					parent->right = insert->left;
 					insert->left = parent;
+					
+					//Now to reassign grandparent's child.
+					if(grandRight)
+						grand->right = insert;
+					else
+						grand->left = insert;
 				}
 				//Parent par had a left child.
 				else
 				{
+					//Right rotation.
+					parent->left = insert->right;
+					insert->right = parent;
 					
+					//Now to reassign grandparent's child.
+					if(grandRight)
+						grand->right = insert;
+					else
+						grand->left = insert;
 
 				}
-				parent = parents.top();
-				parents.pop();
+
+				parent = grand;
+				parentRight = grandRight;
 			}
 
 			//Need to check if there is only one parent node (root)
 			//and rotate accordingly
 			if(insert->priority < parent->priority)
 			{
-				bool right = rightChild.top();
-				rightChild.pop();
 
-				if(right)
+				if(parentRight)
 				{
 					//left rotation with root
 					Node<T>* temp = root->right;
