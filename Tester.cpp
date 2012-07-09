@@ -293,15 +293,17 @@ int main()
 	Treap<Student> hello( *other);
 	cout  << endl << "Inorder Traversal of Hello ";
 	hello.traverse_inorder(cout, ' ');	
-	//cout  << endl << "Inorder Traversal ";
-	//other->traverse_inorder(cout, ' ');
+	cout  << endl << "Inorder Traversal of Other";
+	other->traverse_inorder(cout, ' ');
 
-	//other->~Treap();
+	other->~Treap();
+	hello.~Treap();
+	
+	int h;
+	cin >> h;
 	}
 	catch( TreapException )
 	{
 		cout << "Hey you caught a TreapException! " << endl;
 	}
-	int h;
-	cin >> h;
 }
