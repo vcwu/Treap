@@ -1,4 +1,5 @@
 #include "Treap.h"
+#include <time.h>
 #include <iostream>
 using namespace std;
 
@@ -79,20 +80,27 @@ int main()
 	Reverseorder: 15 14 13 ... and so on
 	*/
 
+	clock_t begin;
+	clock_t end;
+
 	Student smallest(0);
 
 	//Forcing our tree to look like the example
 	int nums[15] = {8,4,12,2,6,10,14,1,3,5,7,9,11,13,15 };
 	Student allStudents[15];
 	Treap<Student>* other = new Treap<Student>();
-
+	
+	begin = clock();
 	for(int x = 0; x <15; x++)
 	{
 		allStudents[x] = Student(nums[x]);
 		other->insert(allStudents[x]);
 	}
 
-	other->insert(smallest);
+	end = clock();
+	cout << "inserting 15 items took " << (float)(end-begin)/CLOCKS_PER_SEC<< "seconds" <<endl;
+
+	//other->insert(smallest);
 
 	//Making a Testing Tree, with One physical obj. 
 	//------------------------------------------------
@@ -218,6 +226,8 @@ int main()
 	//cout << endl << "Find max ";
 	//cout << oneLogical->find_max() << endl;
 	*/
+
+	/*
 	cout << endl <<endl<< "Finding Min of normal tree"
 		<< endl << "--------------------------" << endl;
 	cout << endl << "Find min ";
@@ -252,6 +262,7 @@ int main()
 	cout << endl << "Find max ";
 	cout << other->find_max() << endl;
 
+	*/
 	//Testing Removing 
 	//-------------------------------------------
 	//Removing a non existant node.
@@ -321,6 +332,13 @@ int main()
 		<< endl << oneLogical->logicalSize() << " / " 
 		<< oneLogical->physSize() << endl;
 
+
+	cout  << endl << "Traversing other to test priorities" 
+		<< endl;
+
+	//other->traverse_level(cout, '\n');
+
+	other->traverse_depthFirst(cout, '\n');
 
 	int h;
 	cin >> h;

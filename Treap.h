@@ -236,6 +236,24 @@ public:
 	void traverse_postorder(ostream& o, char delim = '\n');
 	
 	/**
+	traverse_level
+
+	Returns the values and priorities of the nodes traveled in 
+	level by level (breadth first). Specifically used to test for accuracy
+	of rotations.
+	*/
+	void traverse_level(ostream& o, char delim = '\n');
+
+	/**
+	traverse_depthFirst
+
+	Returns the values and priorities of the nodes traveled in 
+	depth first search. Specifically used to test for accuracy
+	of rotations -> this traversal is easier to tell if all branches
+	are truly ascending priority.
+	*/
+	void traverse_depthFirst(ostream& o, char delim = '\n');
+	/**
 	Random num generator, provided by instructor
 	*/
 	static unsigned int Treap_random() 
@@ -813,6 +831,64 @@ void Treap<T>::traverse_reverseorder(ostream& o, char delim = '\n')
 		}
 	}
 	
+}
+
+template <class T>
+void Treap<T>::traverse_level(ostream& o, char delim = '\n')
+{
+	//Level by level traversal, printing out priorirites.
+	//If rotations are correct, the priorites should be in roughly ascending order.
+
+	queue<Node<T>* > cakes;
+	cakes.push(root);
+
+	while(!cakes.empty())
+	{
+		Node<T>* current = cakes.front();
+		cakes.pop();
+
+		o << "Priority "  << current->priority << delim;
+
+		if(current->left)
+			cakes.push(current->left);
+		if(current->right)
+			cakes.push(current->right);
+	}
+}
+
+template <class T>
+void Treap<T>::traverse_depthFirst(ostream& o, char delim = '\n')
+{
+	//Depth first traversal, printing out priorirites.
+	//If rotations are correct, the priorites should be in roughly ascending order.
+
+	stack<Node<T>* > cakes;
+	cakes.push(root);
+	bool leaf;
+
+	while(!cakes.empty())
+	{
+		leaf = false;
+		Node<T>* current = cakes.top();
+		cakes.pop();
+
+		o << "Priority "  << current->priority << delim;
+
+		if(current->left)
+		{
+			leaf = true;
+			cakes.push(current->left);
+		}
+		if(current->right)
+		{
+			leaf= true ;
+			cakes.push(current->right);
+		}
+
+		if(!leaf)
+			//We've reached a leaf, end of current branch. 
+			o<< endl << "Leaf node, branch ended" << endl;
+	}
 }
 
 template <class T>
