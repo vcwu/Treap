@@ -247,7 +247,33 @@ Treap<T>::Treap(const Treap& other)
 template <class T>
 Treap<T>& Treap<T>::operator=(const Treap<T> &rhs)
 {
+	//Code structure modified from Wikipeida article on
+	//Assignment Operator
 
+	if(this != &rhs)
+	{
+		//Alocate new mem. Copy elements
+		
+		queue< Node<T>* > slim;
+		slim.push(rhs.root);
+
+		while(!slim.empty())
+		{
+			Node<T>* current = slim.front();
+			slim.pop();
+
+			if(!current->deleted)
+				insert(current->meat);
+
+			//Push the children, if any, onto the queue
+			if(current->left)
+				slim.push(current->left);
+			if(current->right)
+				slim.push(current->right);
+		}
+
+	}
+	return *this;
 }
 
 

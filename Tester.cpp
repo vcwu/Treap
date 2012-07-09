@@ -296,9 +296,16 @@ int main()
 	cout  << endl << "Inorder Traversal of Other";
 	other->traverse_inorder(cout, ' ');
 
-	other->~Treap();
-	hello.~Treap();
+	//other->~Treap();
+	//hello.~Treap();
 	
+	cout  << endl << "Inorder Traversal of onePhysical before";
+	onePhysical->traverse_inorder(cout, ' ');
+
+	onePhysical = other;
+	cout  << endl << "Inorder Traversal of onePhysical after";
+	onePhysical->traverse_inorder(cout, ' ');
+
 	int h;
 	cin >> h;
 	}
