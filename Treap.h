@@ -62,7 +62,8 @@ class Treap
 	
 private:
 	Node<T>* root;
-
+	int physical;
+	int logical;
 	/**
 	all_traverse()
 
@@ -81,7 +82,7 @@ private:
 
 public:
 
-	Treap() {root = NULL;} 
+	Treap() {root = NULL; physical = 0; logical = 0;} 
 
 	~Treap() {delete root;}
 
@@ -219,9 +220,9 @@ template <class T>
 Treap<T>::Treap(const Treap& other)
 {
 	//The lovely copy constructor
-	
-	//Node<T>* temp = new Node<T>(other.root->meat);
 	root = NULL;
+	physical = 0;
+	logical = 0;
 
 	queue< Node<T>* > slim;
 	slim.push(other.root);
@@ -232,8 +233,9 @@ Treap<T>::Treap(const Treap& other)
 		slim.pop();
 
 		if(!current->deleted)
+		{
 			insert(current->meat);
-
+		}
 		//Push the children, if any, onto the queue
 		if(current->left)
 			slim.push(current->left);
@@ -263,8 +265,9 @@ Treap<T>& Treap<T>::operator=(const Treap<T> &rhs)
 			slim.pop();
 
 			if(!current->deleted)
+			{
 				insert(current->meat);
-
+			}
 			//Push the children, if any, onto the queue
 			if(current->left)
 				slim.push(current->left);
@@ -295,6 +298,8 @@ void Treap<T>::insert(const  T& val)
 	{
 		root = insert;
 		cout << "Inserting root" << insert->meat <<  endl;
+		physical ++;
+		logical ++;
 	}
 	else
 	{
@@ -317,6 +322,8 @@ void Treap<T>::insert(const  T& val)
 					current->right = insert;
 					cout << "Inserting " << insert->meat << "as right child of "
 						<< current->meat << endl;
+					physical++;
+					logical++;
 				}
 				else
 					slim.push(current->right);
@@ -328,6 +335,8 @@ void Treap<T>::insert(const  T& val)
 					cout << "Inserting " << insert->meat << "as left child of "
 						<< current->meat << endl;
 					current->left = insert;
+					physical++;
+					logical++;
 				}
 				else
 					slim.push(current->left);
@@ -337,7 +346,11 @@ void Treap<T>::insert(const  T& val)
 			if(val == current->meat)
 			{
 				if(current->deleted)
+				{
 					current->deleted = false;
+					logical++;	//Physically already present. 			
+				}
+		
 			}
 		}
 	}
@@ -388,8 +401,12 @@ T Treap<T>::remove(const T& val)
 				throw TreapException();	//Can't remove something 
 										//that's already gone
 			else
+			{
 				current->deleted = true;
+				logical--;
+			}
 		}
+
 	}
 	return current->meat;
 }
@@ -773,6 +790,7 @@ T Treap<T>::remove_min()
 				if(!current->deleted)
 				{
 					current->deleted = true;
+					logical--;
 					return current->meat;
 				}
 				//end mod
@@ -825,6 +843,7 @@ T Treap<T>::remove_max()
 				//Modified: If not deleted, delete!!
 				if(!current->deleted)
 				{
+					logical--;
 					current->deleted = true;
 					return current->meat;
 				}
