@@ -80,6 +80,7 @@ private:
 	int all_traverse(int which, const T& target = NULL) const;
 
 
+
 public:
 
 	Treap() {root = NULL; physical = 0; logical = 0;} 
@@ -90,11 +91,33 @@ public:
 	Treap& operator=(const Treap<T> &rhs);
 
 	/**
+	logicalSize()
+
+	Returns logical size, used for testing.
+	*/
+	int logicalSize() {return logical;}
+
+	/**
+	physSize()
+
+	Returns physical size, used for testing.
+	*/
+	int physSize() {return physical;}
+	
+
+	/**
 	insert(const &T meat)
 
 	Inserts a node into the tree. 
 	*/
 	void insert(const T& meat);
+
+	/**
+	insert(const &T meat, priority)
+
+	Inserts a node into the tree with the given priority. 
+	*/
+	void insert(const T& meat, unsigned int priority);
 
 	/**
 	remove(const T& meat)
@@ -212,6 +235,27 @@ public:
 	*/
 	void traverse_postorder(ostream& o, char delim = '\n');
 	
+	/**
+	Random num generator, provided by instructor
+	*/
+	static unsigned int Treap_random() 
+	{
+	// This algorithm isn't nearly good enough for something needing seriously 
+	// random numbers, but is good enough for our purposes here--a kinda-sorta 
+	// random sequence that's not correlated with the input data we're storing in the 
+	// tree. Constants taken from Visual Studio 2010 rand(). 
+	static unsigned _int64 seed = 0; 
+
+	seed = ((seed*214013) + 253011) & 0xFFFFFFFFFFF; // keep low 44 bits for computation
+	return (unsigned int(seed & 0xFFFFFFFFF>>4)); // and return 32 bits of pseudorandom goodness. 
+	// The last bit-shift throws out the lowest-order 4 bits, which are the least 'random'
+	// produced by this sequence. (If we just grab the low order bits, for example, the 
+	// numbers produced by this sequence alternate between even and odd--hardly 'random' 
+	// enough for almost any purpose.) So we're taking 36 bits and returning 32 of them. 
+	// This is better than the default, but again, is far from perfect. 
+	}
+
+
 };
 
 
@@ -280,17 +324,17 @@ Treap<T>& Treap<T>::operator=(const Treap<T> &rhs)
 }
 
 
-/**
-Silently ignores inserting repeated values. 
-
-Note- run time error when trying to remove something that hasn't been 
-initialized
-*/
 template <class T>
-void Treap<T>::insert(const  T& val)
+void Treap<T>::insert(const T& val)
 {
-	//Not dealing with priorities yet
-	
+	unsigned int prior = Treap_random();
+	insert(val, prior);
+}
+
+template <class T>
+void Treap<T>::insert(const  T& val, unsigned int priority)
+{
+	//Silently ignores inserting repeated values.
 	Node<T>* insert = new Node<T>(val);
 	
 	//Check to see if the tree is empty.
@@ -408,6 +452,12 @@ T Treap<T>::remove(const T& val)
 		}
 
 	}
+
+	//Automatically call cleanup
+	if(physical>100 && (float)logical/physical > .75 )
+		cleanup();
+
+
 	return current->meat;
 }
 
@@ -856,4 +906,50 @@ T Treap<T>::remove_max()
 
 	//If the treap is logically empty, will never return anything.
 	throw TreapException();
+}
+
+template <class T>
+void Treap<T>::cleanup()
+{
+	//Traverse the tree. As you traverse, 
+	//when you find non deleted nodes, insert em into a new treap.
+	
+	queue< Node<T>* > slim;
+	slim.push(root);
+
+	queue< Node<T>* > newNodes;
+
+	while(!slim.empty())
+	{
+		Node<T>* current = slim.front();
+		slim.pop();
+		
+		if(!current->deleted)
+		{
+			//Insert node with same data, and priority.
+			Node<T>* shiny = new Node<T>(*current);
+			newNodes.push(shiny);
+		}
+
+		//Push the children, if any, onto the queue
+		if(current->left)
+			slim.push(current->left);
+		if(current->right)
+			slim.push(current->right);
+	}
+
+	//Clear the old tree
+	delete root; root = NULL;
+	physical = 0;
+	logical =0;
+	//Insert in new nodes.
+	while(!newNodes.empty())
+	{
+		Node<T>* shiny = newNodes.front();
+		newNodes.pop();
+
+		insert(shiny->meat, shiny->priority);
+	}
+
+
 }

@@ -102,9 +102,13 @@ int main()
 	//Making a Testing Tree, with many physical, one logical obj. 
 	//------------------------------------------------
 	Treap<Student>* oneLogical = new Treap<Student>();
-
-
 	oneLogical->insert(smallest);
+	for(int x = 0; x< 2; x++)
+	{
+		oneLogical->insert(allStudents[x]);
+		oneLogical->remove(allStudents[x]);
+	}
+
 
 	//Making a Testing Tree, empty, for TreapException
 	//------------------------------------------------
@@ -305,6 +309,17 @@ int main()
 	onePhysical = other;
 	cout  << endl << "Inorder Traversal of onePhysical after";
 	onePhysical->traverse_inorder(cout, ' ');
+
+
+
+	//Testing cleanup
+	cout  << endl << "Logical Size /Physical size Before" 
+		<< endl << oneLogical->logicalSize() << " / " 
+		<< oneLogical->physSize() << endl;
+	oneLogical->cleanup();
+	cout  << endl << "Logical Size /Physical size After" 
+		<< endl << oneLogical->logicalSize() << " / " 
+		<< oneLogical->physSize() << endl;
 
 	int h;
 	cin >> h;
