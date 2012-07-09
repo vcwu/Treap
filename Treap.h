@@ -37,7 +37,7 @@ struct Node
 
 
 
-	Node<T>(T val, bool del = false, unsigned int prior=0, Node<T>* l = 0, Node<T>* r = 0) 
+	Node<T>(T val, unsigned int prior=0, bool del = false, Node<T>* l = 0, Node<T>* r = 0) 
 		: meat(val), deleted(del), priority(prior), right(r), left(l)
 	{};
 
@@ -335,8 +335,20 @@ template <class T>
 void Treap<T>::insert(const  T& val, unsigned int priority)
 {
 	//Silently ignores inserting repeated values.
-	Node<T>* insert = new Node<T>(val);
+	Node<T>* insert = new Node<T>(val, priority);
+	stack<Node <T>* > parents;	
+	stack<bool> rightChild;	//keep track of inserted
+							//as l or r child
+
+
+	//Parents and rightChild
+	//parents[x] is the parent node.
+	//rightChild[x] indicates if the child of parent is R/L
 	
+	//If there already exists a node with the val that is 
+	//deleted, no need to do any rotations. 
+	bool alreadyPrior = false;			
+
 	//Check to see if the tree is empty.
 	if(root == NULL)
 	{
@@ -350,10 +362,11 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 		
 		queue<Node <T>* > slim;
 		slim.push(root);
-		
+
 		while(!slim.empty())
 		{
 			Node<T>* current = slim.front();
+			parents.push(current);
 			slim.pop();
 		
 			//First check if it should go right or left.
@@ -370,7 +383,11 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 					logical++;
 				}
 				else
+				{
 					slim.push(current->right);
+					//A right child.
+					rightChild.push(true);
+				}
 			}
 			if(val < current->meat)
 			{
@@ -383,19 +400,92 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 					logical++;
 				}
 				else
+				{
 					slim.push(current->left);
+					rightChild.push(false);	//a left child
+				}
 			}
 			//If value is  physically present,  but logically deleted
 			//mark it as non deleted again.
+			//For priorities, this SHOULD be in the correct place already.
+			//since it was once inserted as left/right child...
 			if(val == current->meat)
 			{
 				if(current->deleted)
 				{
 					current->deleted = false;
+					current->priority = priority;
 					logical++;	//Physically already present. 			
+					alreadyPrior = true;
 				}
 		
 			}
+		}
+
+		//Now, using the stack of parents, we rotate as long 
+		//as the child's priority is smaller than parents
+		//to form a minheap of priorities.
+
+		//don't need to worry about inserting root, there will at least be 
+		//one node in parents
+
+		if(!alreadyPrior)	//Inserted a completely new node that
+							//needs to be heap-ed.
+		{
+			Node<T>* parent = parents.top();
+			parents.pop();
+			
+			while(!parents.empty() && insert->priority < parent->priority)
+			{
+				//Priorities are out of sync, must rotate.
+
+				//Is the child of parent node par a right or left child?
+				bool right = rightChild.top();
+				rightChild.pop();
+
+				//Parent par had a right child.
+				if(right)
+				{
+					//Left rotation.
+					parent->right = insert->left;
+					insert->left = parent;
+				}
+				//Parent par had a left child.
+				else
+				{
+					
+
+				}
+				parent = parents.top();
+				parents.pop();
+			}
+
+			//Need to check if there is only one parent node (root)
+			//and rotate accordingly
+			if(insert->priority < parent->priority)
+			{
+				bool right = rightChild.top();
+				rightChild.pop();
+
+				if(right)
+				{
+					//left rotation with root
+					Node<T>* temp = root->right;
+					root->right = temp->left;
+					temp->left = root;
+					root = temp;
+				}
+				else
+				{
+					//right rotation with root
+					Node<T>* temp = root->left;
+					root->left = temp->right;
+					temp->right = root;
+					root = temp;
+				}
+
+			}
+			
 		}
 	}
 }
