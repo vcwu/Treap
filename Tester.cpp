@@ -268,6 +268,7 @@ int main()
 
 	//Testing Remove min, remove max
 	//-------------------------------------------
+	/*
 	cout  << endl << "Inorder Traversal ";
 	other->traverse_inorder(cout, ' ');
 	cout <<endl << "Removing min.. " << other->remove_min() <<endl;
@@ -281,6 +282,12 @@ int main()
 	cout <<endl << "Removing max.. " << onePhysical->remove_max() <<endl;
 	cout  << endl << "Inorder Traversal ";
 	onePhysical->traverse_inorder(cout, ' ');
+	*/
+	//Testing my destructors, copy constructors, assignment
+	//Treap<Student> hello(*other);
+	other->~Treap();
+	//cout  << endl << "Inorder Traversal ";
+	//other->traverse_inorder(cout, ' ');
 
 	}
 	catch( TreapException )

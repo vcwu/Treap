@@ -35,27 +35,25 @@ struct Node
 	Node<T> * right;
 	Node<T> * left;
 
+
+
 	Node<T>(T val, bool del = false, unsigned int prior=0, Node<T>* l = 0, Node<T>* r = 0) 
 		: meat(val), deleted(del), priority(prior), right(r), left(l)
 	{};
-	//WILL THE MEAT have a copy constructor?? should i make
-	//it a pointer instead??
 
-
-
-
-	//!_------------------FOR TESTING ONLY-----------------------
-	//Can I assume that meat will have output operator overloading?
-	/*
-	friend ostream& operator<< (ostream &out, Node &p)
-	{
-		out << p.meat << endl;
-		return out;
+	~Node<T>()
+   	{
+		delete right; delete left;
+		right = NULL; left = NULL;
+		cout << "Deleting Node" << endl;
 	}
-	*/
-	//!_------------------FOR TESTING ONLY-----------------------
 
-	
+	Node<T>(const Node<T>& other)
+	{
+		meat = other.meat; deleted = other.deleted;
+		priority = other.priority;
+		right = NULL; left = NULL;
+	}
 };
 
 template <class T>
@@ -78,16 +76,16 @@ private:
 	contains()	returns if found (bool - 0,1)
 
 	*/
-//	int all_traverse();
+	int all_traverse(int which, const T& target = NULL) const;
 
 
 public:
 
-	int all_traverse(int which, const T& target = NULL) const; //put in public for testing purposes
 	Treap() {root = NULL;} 
 
-	~Treap() {}
-	Treap(const Treap& other); 
+	~Treap() {delete root;}
+
+	Treap(const  Treap& other); 
 	Treap& operator=(const Treap<T> &rhs);
 
 	/**
@@ -214,7 +212,42 @@ public:
 	void traverse_postorder(ostream& o, char delim = '\n');
 	
 };
- 
+
+
+
+template <class T>
+Treap<T>::Treap(const Treap& other)
+{
+	//The lovely copy constructor
+	//using a level by level traversal, bottom up
+	root = other.root;
+
+	queue< Node<T>* > slim;
+	slim.push(root);
+
+	while(!slim.empty())
+	{
+		Node<T>* current = slim.front();
+		slim.pop();
+
+
+		//Push the children, if any, onto the queue
+		if(current->left)
+			slim.push(current->left);
+		if(current->right)
+			slim.push(current->right);
+	}
+
+
+
+}
+template <class T>
+Treap<T>& Treap<T>::operator=(const Treap<T> &rhs)
+{
+
+}
+
+
 /**
 Silently ignores inserting repeated values. 
 
