@@ -283,12 +283,20 @@ int main()
 	cout  << endl << "Inorder Traversal ";
 	onePhysical->traverse_inorder(cout, ' ');
 	*/
+
 	//Testing my destructors, copy constructors, assignment
-	//Treap<Student> hello(*other);
-	other->~Treap();
+
+	//why am i deleting other??? 
+	cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');	
+
+	Treap<Student> hello( *other);
+	cout  << endl << "Inorder Traversal of Hello ";
+	hello.traverse_inorder(cout, ' ');	
 	//cout  << endl << "Inorder Traversal ";
 	//other->traverse_inorder(cout, ' ');
 
+	//other->~Treap();
 	}
 	catch( TreapException )
 	{

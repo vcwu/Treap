@@ -44,7 +44,7 @@ struct Node
 	~Node<T>()
    	{
 		delete right; delete left;
-		right = NULL; left = NULL;
+		right = 0; left = 0;
 		cout << "Deleting Node" << endl;
 	}
 
@@ -52,7 +52,7 @@ struct Node
 	{
 		meat = other.meat; deleted = other.deleted;
 		priority = other.priority;
-		right = NULL; left = NULL;
+		right = 0; left = 0;
 	}
 };
 
@@ -219,17 +219,20 @@ template <class T>
 Treap<T>::Treap(const Treap& other)
 {
 	//The lovely copy constructor
-	//using a level by level traversal, bottom up
-	root = other.root;
+	
+	//Node<T>* temp = new Node<T>(other.root->meat);
+	root = NULL;
 
 	queue< Node<T>* > slim;
-	slim.push(root);
+	slim.push(other.root);
 
 	while(!slim.empty())
 	{
 		Node<T>* current = slim.front();
 		slim.pop();
 
+		if(!current->deleted)
+			insert(current->meat);
 
 		//Push the children, if any, onto the queue
 		if(current->left)
@@ -262,7 +265,7 @@ void Treap<T>::insert(const  T& val)
 	Node<T>* insert = new Node<T>(val);
 	
 	//Check to see if the tree is empty.
-	if(!root)
+	if(root == NULL)
 	{
 		root = insert;
 		cout << "Inserting root" << insert->meat <<  endl;
