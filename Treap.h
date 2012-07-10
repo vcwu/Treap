@@ -45,7 +45,7 @@ struct Node
    	{
 		delete right; delete left;
 		right = 0; left = 0;
-		cout << "Deleting Node" << endl;
+		//cout << "Deleting Node" << endl;
 	}
 
 	Node<T>(const Node<T>& other)
@@ -242,7 +242,7 @@ public:
 	level by level (breadth first). Specifically used to test for accuracy
 	of rotations.
 	*/
-	void traverse_level(ostream& o, char delim = '\n');
+	void traverse_level(ostream& o, char delim = '\n', int which = 0);
 
 	/**
 	traverse_depthFirst
@@ -371,7 +371,7 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 	if(root == NULL)
 	{
 		root = insert;
-		cout << "Inserting root" << insert->meat <<  endl;
+		//cout << "Inserting root" << insert->meat <<  endl;
 		physical ++;
 		logical ++;
 	}
@@ -395,8 +395,8 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 				if(current->right == NULL)
 				{
 					current->right = insert;
-					cout << "Inserting " << insert->meat << "as right child of "
-						<< current->meat << endl;
+					//cout << "Inserting " << insert->meat << "as right child of "
+					//	<< current->meat << endl;
 					physical++;
 					logical++;
 					rightChild.push(true);
@@ -412,8 +412,8 @@ void Treap<T>::insert(const  T& val, unsigned int priority)
 			{
 				if(current->left == NULL)
 				{
-					cout << "Inserting " << insert->meat << "as left child of "
-						<< current->meat << endl;
+					//cout << "Inserting " << insert->meat << "as left child of "
+					//	<< current->meat << endl;
 					current->left = insert;
 					physical++;
 					logical++;
@@ -834,7 +834,7 @@ void Treap<T>::traverse_reverseorder(ostream& o, char delim = '\n')
 }
 
 template <class T>
-void Treap<T>::traverse_level(ostream& o, char delim = '\n')
+void Treap<T>::traverse_level(ostream& o, char delim = '\n', int which = 0)
 {
 	//Level by level traversal, printing out priorirites.
 	//If rotations are correct, the priorites should be in roughly ascending order.
@@ -847,8 +847,15 @@ void Treap<T>::traverse_level(ostream& o, char delim = '\n')
 		Node<T>* current = cakes.front();
 		cakes.pop();
 
-		o << "Priority "  << current->priority << delim;
-
+		switch(which)
+		{
+		case(0):
+			o << "Priority "  << current->priority << delim;
+			break;
+		case(1):
+			o << "Node "  << current->meat << " Deleted? " << current->deleted << delim;
+			break;
+		}
 		if(current->left)
 			cakes.push(current->left);
 		if(current->right)
@@ -887,7 +894,7 @@ void Treap<T>::traverse_depthFirst(ostream& o, char delim = '\n')
 
 		if(!leaf)
 			//We've reached a leaf, end of current branch. 
-			o<< endl << "Leaf node, branch ended" << endl;
+			o<<  "Leaf node, branch ended" << endl <<endl;
 	}
 }
 

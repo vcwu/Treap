@@ -82,7 +82,8 @@ int main()
 
 	clock_t begin;
 	clock_t end;
-
+	begin = clock();
+		end = clock();
 	Student smallest(0);
 
 	//Forcing our tree to look like the example
@@ -90,15 +91,15 @@ int main()
 	Student allStudents[15];
 	Treap<Student>* other = new Treap<Student>();
 	
-	begin = clock();
 	for(int x = 0; x <15; x++)
 	{
 		allStudents[x] = Student(nums[x]);
 		other->insert(allStudents[x]);
 	}
 
-	end = clock();
-	cout << "inserting 15 items took " << (float)(end-begin)/CLOCKS_PER_SEC<< "seconds" <<endl;
+
+	//cout << "inserting 15 items took " 
+	//	<< (float)(end-begin)/CLOCKS_PER_SEC<< "seconds" <<endl;
 
 	//other->insert(smallest);
 
@@ -126,7 +127,7 @@ int main()
 
 
 	//=====================================================
-	//TESTING STUFF 
+	//TESTING STUFF, ACCURACY
 	//=====================================================
 
 	//Testing Size, Contains, Deleted, Empty
@@ -150,7 +151,8 @@ int main()
 
 	try
 	{
-	/*
+	
+		/*
 	cout << endl <<endl<< "Traversing through a normal tree"
 		<< endl << "--------------------------" << endl;
 	cout << endl << "Preorder Traversal ";
@@ -162,7 +164,7 @@ int main()
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
 
-	cout << "Removing " << allStudents[4] << endl;
+	cout << endl <<endl << "Removing " << allStudents[4] << endl;
 	other->remove(allStudents[4]);
 
 	cout << endl << "Preorder Traversal ";
@@ -173,8 +175,8 @@ int main()
 	other->traverse_inorder(cout, ' ');
 	cout  << endl << "Reverse order Traversal ";
 	other->traverse_reverseorder(cout, ' ');
-
 	*/
+	
 	/*
 	cout << endl <<endl<< "Traversing through a logical one node tree"
 		<< endl << "--------------------------" << endl;
@@ -274,8 +276,13 @@ int main()
 
 	//Removing a physically present, logically del node.
 	/*
+	cout  << endl <<"Testing remove" << endl;
+	cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');
 	cout << "Removing " << allStudents[2] << endl;
 	other->remove(allStudents[2]);
+	cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');
 	cout << "Removing again " << allStudents[2] << endl;
 	other->remove(allStudents[2]);
 	*/
@@ -284,16 +291,25 @@ int main()
 	//Testing Remove min, remove max
 	//-------------------------------------------
 	/*
+		cout  << endl <<"Testing find_min/max, remove_min/max  " << endl;
 	cout  << endl << "Inorder Traversal ";
 	other->traverse_inorder(cout, ' ');
-	cout <<endl << "Removing min.. " << other->remove_min() <<endl;
+
+	cout <<endl <<endl<< "Finding min " << other->find_min();
+	cout <<endl << "Finding max " << other->find_max() << endl;
+		cout  << endl << "Inorder Traversal ";
+	other->traverse_inorder(cout, ' ');
+	cout <<endl << endl << "Removing min.. " << other->remove_min() ;
 	cout <<endl << "Removing max.. " << other->remove_max() <<endl;
 	cout  << endl << "Inorder Traversal ";
 	other->traverse_inorder(cout, ' ');
 
-	cout  << endl << "Inorder Traversal ";
+	cout <<endl <<endl<< "Finding min " << other->find_min();
+	cout <<endl << "Finding max " << other->find_max() << endl;
+
+	cout  << endl<<endl << "Inorder Traversal ";
 	onePhysical->traverse_inorder(cout, ' ');
-	//cout <<endl << "Removing min.. " << onePhysical->remove_min() <<endl;
+	cout <<endl << "Removing min.. " << onePhysical->remove_min();
 	cout <<endl << "Removing max.. " << onePhysical->remove_max() <<endl;
 	cout  << endl << "Inorder Traversal ";
 	onePhysical->traverse_inorder(cout, ' ');
@@ -302,6 +318,7 @@ int main()
 	//Testing my destructors, copy constructors, assignment
 
 	//why am i deleting other??? 
+	/*
 	cout  << endl << "Inorder Traversal ";
 	other->traverse_inorder(cout, ' ');	
 
@@ -310,10 +327,10 @@ int main()
 	hello.traverse_inorder(cout, ' ');	
 	cout  << endl << "Inorder Traversal of Other";
 	other->traverse_inorder(cout, ' ');
-
+	*/
 	//other->~Treap();
 	//hello.~Treap();
-	
+	/*
 	cout  << endl << "Inorder Traversal of onePhysical before";
 	onePhysical->traverse_inorder(cout, ' ');
 
@@ -321,30 +338,83 @@ int main()
 	cout  << endl << "Inorder Traversal of onePhysical after";
 	onePhysical->traverse_inorder(cout, ' ');
 
-
+	*/
 
 	//Testing cleanup
+	/*
+	cout  << endl <<endl << "Testing Cleanup, size, deleted" 
+		<< endl;
+	cout  << endl <<endl << "Level by level traversal" 
+		<< endl;
+	oneLogical->traverse_level(cout, '\n', 1);
 	cout  << endl << "Logical Size /Physical size Before" 
-		<< endl << oneLogical->logicalSize() << " / " 
-		<< oneLogical->physSize() << endl;
+		<< endl << oneLogical->size() << " / " 
+		<< oneLogical->size()+oneLogical->deleted() << endl;
+	cout<< endl <<"Contains " << allStudents[0] << "?  " 
+		<< oneLogical->contains(allStudents[0]) << endl;
+	cout<< endl <<"Contains " << smallest << "?  " 
+		<< oneLogical->contains(smallest) << endl;
+	cout  << endl <<endl << "Cleanup" 
+		<< endl;
 	oneLogical->cleanup();
 	cout  << endl << "Logical Size /Physical size After" 
-		<< endl << oneLogical->logicalSize() << " / " 
-		<< oneLogical->physSize() << endl;
-
-
-	cout  << endl << "Traversing other to test priorities" 
+		<< endl << oneLogical->size() << " / " 
+		<< oneLogical->size()+oneLogical->deleted() << endl;
+	cout  << endl <<endl << "Level by level traversal" 
 		<< endl;
+	oneLogical->traverse_level(cout, '\n', 1);
+	
+	*/
+	/*
+	cout  << endl << "Testing Insert" 
+		<< endl;
+	cout  << endl << "Inorder Traversal" <<endl;
+	other->traverse_inorder(cout, ' ', 0);
 
-	//other->traverse_level(cout, '\n');
+	cout  << endl <<endl << "Testing Priority" 
+		<< endl;
+	other->traverse_level(cout, '\n');
+	*/
 
-	other->traverse_depthFirst(cout, '\n');
+	//=====================================================
+	//TESTING STUFF for TIME COMPLEXITY
+	//=====================================================
 
-	int h;
-	cin >> h;
+	cout << "Cleaning Up " << endl << endl;
+
+	for(int i =10000; i<= 160000; i*=2)
+	{
+		
+		Treap<Student>* time = new Treap<Student>();
+		
+		Student hello;
+		for(int x = 0; x < i; x++)
+		{
+			hello = Student(x);
+			time->insert(hello);
+			
+		}
+
+		time->insert(Student(i));
+		cout << "Cleanup, no deleted nodes " << hello << endl;
+
+		begin = clock();
+		time->cleanup();
+		end = clock();
+
+		cout << "Nodes - " << i << endl;
+		//cout << "Time: " << (float)(end - begin)/CLOCKS_PER_SEC << endl ;
+		cout << "Clock Ticks: " << (end - begin)<< endl <<endl << endl;
+	}
+	
+	
 	}
 	catch( TreapException )
 	{
 		cout << "Hey you caught a TreapException! " << endl;
 	}
+	
+
+	int h;
+	cin >> h;
 }
